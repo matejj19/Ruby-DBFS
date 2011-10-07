@@ -173,6 +173,9 @@ class Main
     while !opened.empty?
       #odebirame posledne pridany prvek
       current = opened.pop
+      if current.state.equal?(:closed)
+        next
+      end
       current.state = :closed
       print current.id
 
@@ -181,7 +184,7 @@ class Main
       successors = current.get_successors.reverse
       #pridame fresh sousedy do opened
       for successor in successors
-        if successor.state.equal?(:fresh)
+        if !successor.state.equal?(:closed)
           successor.state = :opened
           opened.push(successor)
         end
@@ -243,5 +246,5 @@ end
 #p g1
 
 Main.read_graphs
-Main.graphs.each { |graph| p graph }
+#Main.graphs.each { |graph| p graph }
 Main.find_solutions
